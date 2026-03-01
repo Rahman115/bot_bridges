@@ -12,3 +12,7 @@ colorlog==6.7.0
 
 # Optional (untuk formatting lebih baik)
 rich==13.7.0
+
+# added for WIN
+pynacl==1.6.2
+cryptg==0.5.2

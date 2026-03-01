@@ -68,12 +68,14 @@ class BridgeApp:
     async def setup_signal_handlers(self):
         """Setup graceful shutdown handlers"""
         loop = asyncio.get_running_loop()
+
+        if sys.platform != "win32":
         
-        for sig in (signal.SIGTERM, signal.SIGINT):
-            loop.add_signal_handler(
-                sig,
-                lambda s=sig: asyncio.create_task(self.shutdown(s))
-            )
+            for sig in (signal.SIGTERM, signal.SIGINT):
+                loop.add_signal_handler(
+                    sig,
+                    lambda s=sig: asyncio.create_task(self.shutdown(s))
+                )
     
     async def shutdown(self, sig):
         """Gracefully shutdown the application"""
@@ -105,7 +107,7 @@ class BridgeApp:
             # Start all readers concurrently
             self.tasks = [
                 asyncio.create_task(self.telegram_reader.start()),
-                asyncio.create_task(self.discord_reader.start())
+                asyncio.create_task(self.discord_reader.run_bot())
             ]
             
             logger.info("All readers started, waiting for messages...")

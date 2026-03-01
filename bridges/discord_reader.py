@@ -46,7 +46,11 @@ class DiscordReader(commands.Bot):
         async def on_ready():
             """Called when bot is ready"""
             logger.info(f'Discord bot logged in as {self.user}')
-            
+            for guild in self.guilds:
+                logger.info(f"Guild: {guild.name}")
+                for channel in guild.text_channels:
+                    logger.info(f" - {channel.name} | {channel.id}")
+               
             # Get channel info
             channel = self.get_channel(self.channel_id)
             if channel:
@@ -85,9 +89,10 @@ class DiscordReader(commands.Bot):
             except Exception as e:
                 logger.error(f"Error handling Discord message: {e}")
     
-    async def start(self):
+    async def run_bot(self):
         """Start the Discord bot"""
-        await self.start(self.token)
+        # await self.start(self.token)
+        await super().start(self.token)
     
     async def stop(self):
         """Stop the Discord bot"""
